@@ -3,7 +3,7 @@
 
 srt_ is a tiny Python library for parsing, modifying, and composing SRT files.
 
-.. _srt: https://github.com/cdown/srt
+.. _srt: https://github.com/switchupcb/srt
 
 Documentation
 =============

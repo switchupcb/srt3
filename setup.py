@@ -17,8 +17,7 @@ setup(
     python_requires=">=2.7",
     description="A tiny library for parsing, modifying, and composing SRT files.",
     long_description=README,
-    author="Chris Down",
-    author_email="chris@chrisdown.name",
+    author="SwitchUpCB",
     url="https://github.com/cdown/srt",
     py_modules=["srt", "srt_tools.utils"],
     scripts=[
