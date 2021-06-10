@@ -2,7 +2,6 @@
 
 """Play subtitles with correct timing to stdout."""
 
-from __future__ import print_function
 import logging
 from threading import Timer, Lock
 import srt_tools.utils
@@ -17,10 +16,7 @@ def print_sub(sub, encoding):
     log.debug("Timer woke up to print %s", sub.content)
 
     with output_lock:
-        try:
-            sys.stdout.write(sub.content + "\n\n")
-        except UnicodeEncodeError:  # Python 2 fallback
-            sys.stdout.write(sub.content.encode(encoding) + "\n\n")
+        sys.stdout.write(sub.content.encode(encoding) + "\n\n")
         sys.stdout.flush()
 
 

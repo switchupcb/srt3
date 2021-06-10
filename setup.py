@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
 import codecs
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from distutils.core import setup
 
 
 with codecs.open("README.rst", encoding="utf8") as readme_f:
@@ -39,8 +35,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: Public Domain",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",

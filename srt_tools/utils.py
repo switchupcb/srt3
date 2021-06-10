@@ -16,11 +16,6 @@ STDOUT_BYTESTREAM = getattr(sys.stdout, "buffer", sys.stdout)
 
 DASH_STREAM_MAP = {"input": STDIN_BYTESTREAM, "output": STDOUT_BYTESTREAM}
 
-try:  # Python 2
-    range = xrange  # pytype: disable=name-error
-except NameError:
-    pass
-
 log = logging.getLogger(__name__)
 
 

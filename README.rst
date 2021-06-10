@@ -1,6 +1,6 @@
 |travis| |lgtm| |coveralls| |libraries|
 
-.. |travis| image:: https://img.shields.io/travis/switchupcb/srt/develop.svg?label=tests
+.. |travis| image:: https://travis-ci.com/switchupcb/srt.svg?branch=develop
   :target: https://travis-ci.com/switchupcb/srt
   :alt: Tests
 

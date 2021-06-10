@@ -4,19 +4,15 @@ import os
 import subprocess
 import sys
 import tempfile
-
-try:
-    from shlex import quote
-except ImportError:  # <3.3 fallback
-    from pipes import quote
+from shlex import quote
 
 
 sample_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "files")
 
 
 if os.name == "nt":
-    # Sigh, shlex.quote quotes incorrectly on Windows
-    quote = lambda x: windows_crappy_quote(x)
+    # shlex.quote quotes incorrectly on Windows
+    quote = lambda x: windows_ebic_quote(x)
 
 
 def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
@@ -29,7 +25,7 @@ def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
     return raw_out.decode(encoding)
 
 
-def windows_crappy_quote(data):
+def windows_ebic_quote(data):
     """
     I'm 100% sure this isn't secure, please don't use it with untrusted code. I
     beg you.
