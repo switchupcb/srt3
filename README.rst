@@ -1,19 +1,19 @@
 |travis| |lgtm| |coveralls| |libraries|
 
-.. |travis| image:: https://img.shields.io/travis/cdown/srt/develop.svg?label=tests
-  :target: https://travis-ci.org/cdown/srt
+.. |travis| image:: https://img.shields.io/travis/switchupcb/srt/develop.svg?label=tests
+  :target: https://travis-ci.com/switchupcb/srt
   :alt: Tests
 
-.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/github/cdown/srt.svg?label=code%20quality
-  :target: https://lgtm.com/projects/g/cdown/srt/overview/
+.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/github/switchupcb/srt.svg?label=code%20quality
+  :target: https://lgtm.com/projects/g/switchupcb/srt/overview/
   :alt: LGTM
 
-.. |coveralls| image:: https://img.shields.io/coveralls/cdown/srt/develop.svg?label=test%20coverage
-  :target: https://coveralls.io/github/cdown/srt?branch=develop
+.. |coveralls| image:: https://img.shields.io/coveralls/switchupcb/srt/develop.svg?label=test%20coverage
+  :target: https://coveralls.io/github/switchupcb/srt?branch=develop
   :alt: Coverage
 
-.. |libraries| image:: https://img.shields.io/librariesio/github/cdown/srt.svg?label=dependencies
-  :target: https://libraries.io/github/cdown/srt
+.. |libraries| image:: https://img.shields.io/librariesio/github/switchupcb/srt.svg?label=dependencies
+  :target: https://libraries.io/github/switchupcb/srt
   :alt: Dependencies
 
 srt is a tiny but featureful Python library for parsing, modifying, and
@@ -52,7 +52,7 @@ Why choose this library?
 .. _quickstart: http://srt.readthedocs.org/en/latest/quickstart.html
 .. _`SRT files`: https://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format
 .. _Hypothesis: https://github.com/DRMacIver/hypothesis
-.. _`100% test coverage`: https://coveralls.io/github/cdown/srt?branch=develop
+.. _`100% test coverage`: https://coveralls.io/github/switchupcb/srt?branch=develop
 .. _`Well documented API`: http://srt.readthedocs.org/en/latest/index.html
 .. _`~150 lines of code`: https://paste.pound-python.org/raw/3WgFQIvkVVvBZvQI3nm4/
 .. _PyPy: http://pypy.org/
@@ -158,7 +158,7 @@ To install the latest development version directly from GitHub:
 
 .. code::
 
-    pip install -U git+https://github.com/cdown/srt.git@develop
+    pip install -U git+https://github.com/switchupcb/srt.git@develop
 
 Testing
 -------
@@ -169,4 +169,4 @@ Testing
 
 .. _Tox: https://tox.readthedocs.org
 .. _`Detailed API documentation`: http://srt.readthedocs.org/en/latest/api.html
-.. _`tools shipped with the library`: https://github.com/cdown/srt/tree/develop/srt_tools
+.. _`tools shipped with the library`: https://github.com/switchupcb/srt/tree/develop/srt_tools
