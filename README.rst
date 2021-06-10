@@ -49,11 +49,11 @@ Why choose this library?
 - Tools included — contains lightweight tools to perform generic tasks with the
   library
 
-.. _quickstart: http://srt.readthedocs.org/en/latest/quickstart.html
+.. _quickstart: http://srt3.readthedocs.org/en/latest/quickstart.html
 .. _`SRT files`: https://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format
 .. _Hypothesis: https://github.com/DRMacIver/hypothesis
 .. _`100% test coverage`: https://coveralls.io/github/switchupcb/srt?branch=develop
-.. _`Well documented API`: http://srt.readthedocs.org/en/latest/index.html
+.. _`Well documented API`: http://srt3.readthedocs.org/en/latest/index.html
 .. _`~150 lines of code`: https://paste.pound-python.org/raw/3WgFQIvkVVvBZvQI3nm4/
 .. _PyPy: http://pypy.org/
 .. _`~30% faster than pysrt on typical workloads`: https://paste.pound-python.org/raw/8nQKbDW0ROWvS7bOeAb3/
@@ -168,5 +168,5 @@ Testing
    tox
 
 .. _Tox: https://tox.readthedocs.org
-.. _`Detailed API documentation`: http://srt.readthedocs.org/en/latest/api.html
+.. _`Detailed API documentation`: http://srt3.readthedocs.org/en/latest/api.html
 .. _`tools shipped with the library`: https://github.com/switchupcb/srt/tree/develop/srt_tools
