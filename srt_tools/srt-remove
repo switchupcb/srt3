@@ -9,32 +9,33 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 def parse_args():
     examples = {
         "Remove captions within :05 - :08": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00",
         "Remove captions non-sequentially": "srt remove -i example.srt --t1 00:00:8,00 --t2 00:00:5,00",
         "Remove captions from :16 to the end of the file.": "srt remove -i example.srt --t1 00:00:16,00",
         "Remove captions from :00 to :16": "srt remove -i example.srt --t2 00:00:16,00",
-        "Remove every caption": "srt remove -i example.srt"
+        "Remove every caption": "srt remove -i example.srt",
     }
     parser = srt_tools.utils.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(
-    "--start",
-    "--t1",
-    metavar=("TIMESTAMP"),
-    type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
-    default=datetime.timedelta(0),
-    nargs='?',
-    help="The timestamp to start removing from."
+        "--start",
+        "--t1",
+        metavar=("TIMESTAMP"),
+        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
+        default=datetime.timedelta(0),
+        nargs="?",
+        help="The timestamp to start removing from.",
     )
     parser.add_argument(
-    "--end",
-    "--t2",
-    metavar=("TIMESTAMP"),
-    type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
-    default=datetime.timedelta(0),
-    nargs='?',
-    help="The timestamp to stop removing at."
+        "--end",
+        "--t2",
+        metavar=("TIMESTAMP"),
+        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
+        default=datetime.timedelta(0),
+        nargs="?",
+        help="The timestamp to stop removing at.",
     )
     return parser.parse_args()
 
@@ -46,6 +47,7 @@ def split(subs, timestamp):
     """
     # ensures list compatibility
     from types import GeneratorType
+
     subs = (x for x in subs) if not isinstance(subs, GeneratorType) else subs
 
     # yield unsplit captions before the timestamp
@@ -75,7 +77,9 @@ def split(subs, timestamp):
 
     # yield unsplit captions after the timestamp
     if break_subtitle:
-        yield srt.Subtitle(idx, break_subtitle.start, break_subtitle.end, break_subtitle.content)
+        yield srt.Subtitle(
+            idx, break_subtitle.start, break_subtitle.end, break_subtitle.content
+        )
         idx += 1
 
     for subtitle in subs:
@@ -83,7 +87,9 @@ def split(subs, timestamp):
         idx += 1
 
 
-def remove_caption_timestamp(subs, timestamp_one=datetime.timedelta(0), timestamp_two=datetime.timedelta(0)):
+def remove_caption_timestamp(
+    subs, timestamp_one=datetime.timedelta(0), timestamp_two=datetime.timedelta(0)
+):
     """
     Removes captions from subtitles by timestamp.
     When timestamp one > timestamp two, captions up to timestamp two will be removed
@@ -95,6 +101,7 @@ def remove_caption_timestamp(subs, timestamp_one=datetime.timedelta(0), timestam
     """
     # ensures list compatibility
     from types import GeneratorType
+
     subs = (x for x in subs) if not isinstance(subs, GeneratorType) else subs
 
     # edge cases
@@ -145,7 +152,7 @@ def remove_caption_timestamp(subs, timestamp_one=datetime.timedelta(0), timestam
         # remove captions before timestamp two
         if first_subtitle.start < timestamp_two:
             for subtitle in subs:
-                if timestamp_two <= subtitle.start :
+                if timestamp_two <= subtitle.start:
                     yield subtitle
                     idx += 1
                     break
@@ -178,6 +185,7 @@ def main():
         args.output.write(output)
     except (UnicodeEncodeError, TypeError):  # Python 2 fallback
         args.output.write(output.encode(args.encoding))
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()
