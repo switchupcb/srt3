@@ -72,7 +72,7 @@ FILE_TYPES = (io.IOBase,)
 
 
 @functools.total_ordering
-class Subtitle(object):
+class Subtitle:
     r"""
     The metadata relating to a single subtitle. Subtitles are sorted by start
     time by default.
@@ -455,7 +455,7 @@ class SRTParseError(Exception):
             "but started at char %d (unmatched content: %r)"
             % (expected_start, actual_start, unmatched_content)
         )
-        super(SRTParseError, self).__init__(message)
+        super().__init__(message)
 
         self.expected_start = expected_start
         self.actual_start = actual_start
