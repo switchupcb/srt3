@@ -1,15 +1,25 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """Filter subtitles that match or don't match a particular pattern."""
 
+from .. import utils
 import importlib
-import srt_tools.utils
 import logging
 
 log = logging.getLogger(__name__)
 
 
 def strip_to_matching_lines_only(subtitles, imports, func_str, invert, per_sub):
+    """
+    Sets all non-mtching subtitle content empty.
+
+    :param subtitles: :py:class:`Subtitle` objects
+    :param imports: Modules to import in the function context.
+    :param func_str: A function to use to match lines.
+    :param bool invert: Whether to only match lines that return False.
+    :param per_sub:  Match the content of each subtitle, not each content-line.
+    :rtype: :term:`generator` of :py:class:`Subtitle` objects
+    """
     for import_name in imports:
         real_import = importlib.import_module(import_name)
         globals()[import_name] = real_import
@@ -35,10 +45,10 @@ def strip_to_matching_lines_only(subtitles, imports, func_str, invert, per_sub):
 
 def parse_args():
     examples = {
-        "Only include Chinese lines": "srt lines-matching -m hanzidentifier -f hanzidentifier.has_chinese",
-        "Exclude all lines which only contain numbers": "srt lines-matching -v -f 'lambda x: x.isdigit()'",
+        "Only include Chinese lines": "srt lines_matching -m hanzidentifier -f hanzidentifier.has_chinese",
+        "Exclude all lines which only contain numbers": "srt lines_matching -v -f 'lambda x: x.isdigit()'",
     }
-    parser = srt_tools.utils.basic_parser(description=__doc__, examples=examples)
+    parser = utils.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(
         "-f", "--func", help="a function to use to match lines", required=True
     )
@@ -67,13 +77,11 @@ def parse_args():
 def main():
     args = parse_args()
     logging.basicConfig(level=args.log_level)
-    srt_tools.utils.set_basic_args(args)
+    utils.set_basic_args(args)
     matching_subtitles_only = strip_to_matching_lines_only(
         args.input, args.module, args.func, args.invert, args.per_subtitle
     )
-    output = srt_tools.utils.compose_suggest_on_fail(
-        matching_subtitles_only, strict=args.strict
-    )
+    output = utils.compose_suggest_on_fail(matching_subtitles_only, strict=args.strict)
     args.output.write(output)
 
 

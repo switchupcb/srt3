@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import os
 import subprocess
@@ -15,6 +15,14 @@ if os.name == "nt":
     quote = lambda x: windows_ebic_quote(x)
 
 
+def windows_ebic_quote(data):
+    """
+    I'm 100% sure this isn't secure, please don't use it with untrusted code.
+    """
+    data = data.replace('"', '""')
+    return '"' + data + '"'
+
+
 def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
     extra_env = {}
 
@@ -25,20 +33,11 @@ def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
     return raw_out.decode(encoding)
 
 
-def windows_ebic_quote(data):
-    """
-    I'm 100% sure this isn't secure, please don't use it with untrusted code. I
-    beg you.
-    """
-    data = data.replace('"', '""')
-    return '"' + data + '"'
-
-
 def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=False):
     # TODO: pytype doesn't like the mixed types in the matrix, but this works
     # fine. Maybe it would be happier with a namedtuple?
-    cmd[0] = "srt_tools/" + cmd[0]  # pytype: disable=unsupported-operands
     cmd.insert(0, sys.executable)  # pytype: disable=attribute-error
+    cmd.insert(1, "srt/tools/srt")
     in_file = os.path.join(sample_dir, "ascii.srt")
     in_file_gb = os.path.join(sample_dir, "gb2312.srt")
     fd, out_file = tempfile.mkstemp()
@@ -84,12 +83,11 @@ def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=Fals
 
 def test_tools_support():
     matrix = [
-        (["srt-normalise"], False),
-        (["srt-deduplicate"], False),
-        (["srt-fixed-timeshift", "--seconds", "5"], False),
+        (["deduplicate"], False),
+        (["fixed_timeshift", "--seconds", "5"], False),
         (
             [
-                "srt-linear-timeshift",
+                "linear_timeshift",
                 "--f1",
                 "00:00:01,000",
                 "--f2",
@@ -101,12 +99,11 @@ def test_tools_support():
             ],
             False,
         ),
-        (["srt-lines-matching", "-f", "lambda x: True"], False),
-        (["srt-process", "-f", "lambda x: x"], False),
-        (["srt-mux"], False, True),
-        (["srt-mux", "-t"], False, True),
-        # Need to sort out time/thread issues
-        # (('srt-play'), True),
+        (["lines_matching", "-f", "lambda x: True"], False),
+        (["process", "-f", "lambda x: x"], False),
+        (["mux"], False, True),
+        (["mux", "-t"], False, True),
+        (["normalise"], False),
     ]
 
     for args in matrix:

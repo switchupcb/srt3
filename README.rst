@@ -16,46 +16,31 @@
   :target: https://libraries.io/github/switchupcb/srt
   :alt: Dependencies
 
-srt is a tiny but featureful Python library for parsing, modifying, and
+srt3 is a simple yet featureful Python library for parsing, modifying, and
 composing `SRT files`_. Take a look at the quickstart_ for a basic overview of
 the library. `Detailed API documentation`_ is also available.
 
 Want to see some examples of its use? Take a look at the `tools shipped with
-the library`_. This library is also used internally by projects like
-`subsync`_, `bw_plex`_, and many more.
-
-.. _subsync: https://github.com/smacke/subsync
-.. _bw_plex: https://github.com/Hellowlol/bw_plex
+the library`_.
 
 Why choose this library?
 ------------------------
 
-- Can parse many broken SRT files which other SRT libraries cannot, and fix them
-- Extremely lightweight, `~150 lines of code`_ excluding docstrings
-- Simple, intuitive API
-- High quality test suite using Hypothesis_
-- `100% test coverage`_ (including branches)
-- `Well documented API`_, at both a high and low level
-- `~30% faster than pysrt on typical workloads`_
-- Full support for `PyPy`_
-- No dependencies outside of the standard library
-- Tolerant of many common errors found in real-world SRT files
+- Parses broken SRT files other libraries can't and fixes them
 - Support for Asian-style SRT formats (ie. "fullwidth" SRT format)
-- Completely Unicode compliant
+- Includes tools that allow you to perform tasks using the library
+- Extremely lightweight with a `Well Documented API`_
+- No Dependencies outside of the Standard Library
+- High quality test suite using Hypothesis_
+- `~30% faster than pysrt on typical workloads`_
+- 100% Unicode Compliant
+- Portable — runs on Windows, OSX, and Linux
 - Released under a highly permissive license (MIT)
-- Real world tested — used in production to process thousands of SRT files
-  every day
-- Portable — runs on Linux, OSX, and Windows
-- Tools included — contains lightweight tools to perform generic tasks with the
-  library
 
 .. _quickstart: http://srt3.readthedocs.org/en/latest/quickstart.html
 .. _`SRT files`: https://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format
 .. _Hypothesis: https://github.com/DRMacIver/hypothesis
-.. _`100% test coverage`: https://coveralls.io/github/switchupcb/srt?branch=develop
-.. _`Well documented API`: http://srt3.readthedocs.org/en/latest/index.html
-.. _`~150 lines of code`: https://paste.pound-python.org/raw/3WgFQIvkVVvBZvQI3nm4/
-.. _PyPy: http://pypy.org/
+.. _`Well Documented API`: http://srt3.readthedocs.org/en/latest/index.html
 .. _`~30% faster than pysrt on typical workloads`: https://paste.pound-python.org/raw/8nQKbDW0ROWvS7bOeAb3/
 
 Usage
@@ -81,7 +66,7 @@ non-Chinese lines:
     Yet, these precious waters are rich with surprise.
     可是这些珍贵的淡水中却充满了惊奇
 
-    $ srt lines-matching -m hanzidentifier -f hanzidentifier.has_chinese -i pe.srt
+    $ srt lines_matching -m hanzidentifier -f hanzidentifier.has_chinese -i pe.srt
     1
     00:00:33,843 --> 00:00:38,097
     地球上只有3%的水是淡水
@@ -91,18 +76,18 @@ non-Chinese lines:
     可是这些珍贵的淡水中却充满了惊奇
 
 
-These tools are easy to chain together, for example, say you have one subtitle
-with Chinese and English, and other with French, but you want Chinese and
-French only. Oh, and the Chinese one is 5 seconds later than it should be.
-That's easy enough to sort out:
+These tools are easy to chain together. For example, you have a subtitle
+containing Chinese and English, and another containing French. You only want Chinese
+French. The Chinese and English subtitle is also 5 seconds late. That's easy enough
+to sort out:
 
 .. code::
 
-   $ srt lines-matching -m hanzidentifier -f hanzidentifier.has_chinese -i chs+eng.srt |
-   >     srt fixed-timeshift --seconds -5 |
+   $ srt lines_matching -m hanzidentifier -f hanzidentifier.has_chinese -i chs+eng.srt |
+   >     srt fixed_timeshift --seconds -5 |
    >     srt mux --input - --input fra.srt
 
-See the srt_tools/ directory for more information.
+See the srt/tools/ directory for more information.
 
 .. _hanzidentifier: https://github.com/tsroten/hanzidentifier
 
@@ -160,13 +145,5 @@ To install the latest development version directly from GitHub:
 
     pip install -U git+https://github.com/switchupcb/srt.git@develop
 
-Testing
--------
-
-.. code::
-
-   tox
-
-.. _Tox: https://tox.readthedocs.org
 .. _`Detailed API documentation`: http://srt3.readthedocs.org/en/latest/api.html
-.. _`tools shipped with the library`: https://github.com/switchupcb/srt/tree/develop/srt_tools
+.. _`tools shipped with the library`: https://github.com/switchupcb/srt/tree/develop/srt/tools

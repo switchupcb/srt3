@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 from datetime import timedelta
+from io import StringIO
 import collections
 import functools
 import os
 import string
-from io import StringIO
 
 import pytest
 from hypothesis import given, settings, HealthCheck, assume

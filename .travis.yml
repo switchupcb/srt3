@@ -11,7 +11,6 @@ jobs:
     ## Linux
 
     # CPython (in official virtualenv)
-    - python: '3.5'
     - python: '3.6'
     - python: '3.7'
     - python: '3.8'  # pytype is currently <= 3.8

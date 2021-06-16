@@ -1,5 +1,6 @@
-API documentation
+API Documentation
 =================
 
-.. automodule:: srt
+.. automodule:: srt.srt
    :members:
+   :exclude-members:

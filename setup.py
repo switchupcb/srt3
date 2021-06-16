@@ -1,32 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import codecs
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 
 with codecs.open("README.rst", encoding="utf8") as readme_f:
     README = readme_f.read()
 
 setup(
-    name="srt",
-    version="3.4.1",
-    python_requires=">=2.7",
-    description="A tiny library for parsing, modifying, and composing SRT files.",
+    name="srt3",
+    version="0.0.0",
+    python_requires=">=3.3",
+    description="A simple library for parsing, modifying, and composing SRT files.",
     long_description=README,
     author="SwitchUpCB",
     url="https://github.com/switchupcb/srt",
-    py_modules=["srt", "srt_tools.utils"],
+    packages=find_packages(),
     scripts=[
-        "srt_tools/srt",
-        "srt_tools/srt-deduplicate",
-        "srt_tools/srt-normalise",
-        "srt_tools/srt-fixed-timeshift",
-        "srt_tools/srt-linear-timeshift",
-        "srt_tools/srt-lines-matching",
-        "srt_tools/srt-mux",
-        "srt_tools/srt-play",
-        "srt_tools/srt-process",
-        "srt_tools/srt-remove",
+        "srt/tools/srt",
     ],
     license="Public Domain",
     keywords="srt",
@@ -36,7 +27,6 @@ setup(
         "License :: Public Domain",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",

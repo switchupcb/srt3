@@ -46,4 +46,28 @@ Compose an SRT from Python objects
     00:31:41,933 --> 00:31:43,435
     we dig a tunnel under the city and release it into the wild.
     <BLANKLINE>
-    <BLANKLINE>
+
+Import Guide
+------------
+
+.. code:: python
+
+    ### Use srt via srt.func()
+    # import the whole srt package (including tools)
+    import srt
+
+    # only imports the srt.py module
+    from srt import srt
+
+    ### Use srt tools
+    import srt
+    # srt.tools.tool.func()
+    srt.tools.remove.remove_by_timestamp()
+
+    from srt import tools
+    # tools.tool.func()
+    tools.remove.remove_by_timestamp()
+
+    # import all members from a tool module.
+    from srt.tools.tool.remove import *
+    remove_by_timestamp()

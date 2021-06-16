@@ -1,48 +1,21 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """Remove subtitles by index or timestamp."""
 
+from .. import utils
 import srt
 import datetime
-import srt_tools.utils
 import logging
 
 log = logging.getLogger(__name__)
 
 
-def parse_args():
-    examples = {
-        "Remove captions within :05 - :08": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00",
-        "Remove captions non-sequentially": "srt remove -i example.srt --t1 00:00:8,00 --t2 00:00:5,00",
-        "Remove captions from :16 to the end of the file.": "srt remove -i example.srt --t1 00:00:16,00",
-        "Remove captions from :00 to :16": "srt remove -i example.srt --t2 00:00:16,00",
-        "Remove every caption": "srt remove -i example.srt",
-    }
-    parser = srt_tools.utils.basic_parser(description=__doc__, examples=examples)
-    parser.add_argument(
-        "--start",
-        "--t1",
-        metavar=("TIMESTAMP"),
-        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
-        default=datetime.timedelta(0),
-        nargs="?",
-        help="The timestamp to start removing from.",
-    )
-    parser.add_argument(
-        "--end",
-        "--t2",
-        metavar=("TIMESTAMP"),
-        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
-        default=datetime.timedelta(0),
-        nargs="?",
-        help="The timestamp to stop removing at.",
-    )
-    return parser.parse_args()
-
-
 def split(subs, timestamp):
     """
     Splits subtitles at a given timestamp.
+
+    :param subs: :py:class:`Subtitle` objects
+    :param datetime.timedelta timestamp: The timestamp to split subtitles at.
     :rtype: :term:`generator` of :py:class:`Subtitle` objects
     """
     # ensures list compatibility
@@ -87,7 +60,7 @@ def split(subs, timestamp):
         idx += 1
 
 
-def remove_caption_timestamp(
+def remove_by_timestamp(
     subs, timestamp_one=datetime.timedelta(0), timestamp_two=datetime.timedelta(0)
 ):
     """
@@ -95,8 +68,9 @@ def remove_caption_timestamp(
     When timestamp one > timestamp two, captions up to timestamp two will be removed
     and captions after timestamp one will be removed.
 
-    :param int timestamp_one: The timestamp to remove from.
-    :param int timestamp_two: The timestamp to remove to.
+    :param subs: :py:class:`Subtitle` objects
+    :param datetime.timedelta timestamp_one: The timestamp to remove from.
+    :param datetime.timedelta timestamp_two: The timestamp to remove to.
     :rtype: :term:`generator` of :py:class:`Subtitle` objects
     """
     # ensures list compatibility
@@ -172,12 +146,43 @@ def remove_caption_timestamp(
             pass
 
 
+# Command Line Interface
+def parse_args():
+    examples = {
+        "Remove captions within :05 - :08": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00",
+        "Remove captions non-sequentially": "srt remove -i example.srt --t1 00:00:8,00 --t2 00:00:5,00",
+        "Remove captions from :16 to the end of the file.": "srt remove -i example.srt --t1 00:00:16,00",
+        "Remove captions from :00 to :16": "srt remove -i example.srt --t2 00:00:16,00",
+        "Remove every caption": "srt remove -i example.srt",
+    }
+    parser = utils.basic_parser(description=__doc__, examples=examples)
+    parser.add_argument(
+        "--start",
+        "--t1",
+        metavar=("TIMESTAMP"),
+        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
+        default=datetime.timedelta(0),
+        nargs="?",
+        help="The timestamp to start removing from.",
+    )
+    parser.add_argument(
+        "--end",
+        "--t2",
+        metavar=("TIMESTAMP"),
+        type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
+        default=datetime.timedelta(0),
+        nargs="?",
+        help="The timestamp to stop removing at.",
+    )
+    return parser.parse_args()
+
+
 def main():
     args = parse_args()
     logging.basicConfig(level=args.log_level)
-    srt_tools.utils.set_basic_args(args)
-    removed_subs = remove_caption_timestamp(args.input, args.start, args.end)
-    output = srt_tools.utils.compose_suggest_on_fail(removed_subs, strict=args.strict)
+    utils.set_basic_args(args)
+    removed_subs = remove_by_timestamp(args.input, args.start, args.end)
+    output = utils.compose_suggest_on_fail(removed_subs, strict=args.strict)
     args.output.write(output)
 
 

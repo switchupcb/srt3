@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """Merge multiple subtitles together into one."""
 
+from .. import utils
 import datetime
-import srt_tools.utils
 import logging
 import operator
 
@@ -13,12 +13,47 @@ TOP = r"{\an8}"
 BOTTOM = r"{\an2}"
 
 
+def merge_subs(subs, acceptable_diff, attr, width):
+    """
+    Merge subs with similar start/end times together (in-place).
+    This prevents subtitles from jumping around the screen.
+
+    :param subs: :py:class:`Subtitle` objects
+    :param datetime.timedelta acceptable_diff: The amount of milliseconds
+                                    a subtitle start time must be to shift.
+    :param str attr:
+    :param int width: The amount of subtitles to consider for time matching at once.
+    :rtype: :term:`generator` of :py:class:`Subtitle` objects
+    """
+    sorted_subs = sorted(subs, key=operator.attrgetter(attr))
+
+    for subs in utils.sliding_window(sorted_subs, width=width):
+        current_sub = subs[0]
+        future_subs = subs[1:]
+        current_comp = getattr(current_sub, attr)
+
+        for future_sub in future_subs:
+            future_comp = getattr(future_sub, attr)
+            if current_comp + acceptable_diff > future_comp:
+                log.debug(
+                    "Merging %d's %s time into %d",
+                    future_sub.index,
+                    attr,
+                    current_sub.index,
+                )
+                setattr(future_sub, attr, current_comp)
+            else:
+                # Since these are sorted, and this one didn't match, we can be
+                # sure future ones won't match either.
+                break
+
+
 def parse_args():
     examples = {
         "Merge English and Chinese subtitles": "srt mux -i eng.srt -i chs.srt -o both.srt",
-        "Merge subtitles, with one on top and one at the bottom": "srt mux -t -i eng.srt -i chs.srt -o both.srt",
+        "Merge subtitles with one on top and one at the bottom": "srt mux -t -i eng.srt -i chs.srt -o both.srt",
     }
-    parser = srt_tools.utils.basic_parser(
+    parser = utils.basic_parser(
         description=__doc__, examples=examples, multi_input=True
     )
     parser.add_argument(
@@ -50,41 +85,11 @@ def parse_args():
     return parser.parse_args()
 
 
-def merge_subs(subs, acceptable_diff, attr, width):
-    """
-    Merge subs with similar start/end times together. This prevents the
-    subtitles jumping around the screen.
-
-    The merge is done in-place.
-    """
-    sorted_subs = sorted(subs, key=operator.attrgetter(attr))
-
-    for subs in srt_tools.utils.sliding_window(sorted_subs, width=width):
-        current_sub = subs[0]
-        future_subs = subs[1:]
-        current_comp = getattr(current_sub, attr)
-
-        for future_sub in future_subs:
-            future_comp = getattr(future_sub, attr)
-            if current_comp + acceptable_diff > future_comp:
-                log.debug(
-                    "Merging %d's %s time into %d",
-                    future_sub.index,
-                    attr,
-                    current_sub.index,
-                )
-                setattr(future_sub, attr, current_comp)
-            else:
-                # Since these are sorted, and this one didn't match, we can be
-                # sure future ones won't match either.
-                break
-
-
 def main():
     args = parse_args()
     logging.basicConfig(level=args.log_level)
 
-    srt_tools.utils.set_basic_args(args)
+    utils.set_basic_args(args)
 
     muxed_subs = []
     for idx, subs in enumerate(args.input):
@@ -100,7 +105,7 @@ def main():
         merge_subs(muxed_subs, args.ms, "start", args.width)
         merge_subs(muxed_subs, args.ms, "end", args.width)
 
-    output = srt_tools.utils.compose_suggest_on_fail(muxed_subs, strict=args.strict)
+    output = utils.compose_suggest_on_fail(muxed_subs, strict=args.strict)
     args.output.write(output)
 
 

@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-"""A tiny library for parsing, modifying, and composing SRT files."""
+"""A simple library for parsing, modifying, and composing SRT files."""
 
 import functools
 import re

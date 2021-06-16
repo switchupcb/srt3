@@ -1,13 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 import argparse
 import codecs
 import srt
-import logging
 import sys
 import itertools
 import collections
 import os
+import logging
+
 
 PROG_NAME = os.path.basename(sys.argv[0]).replace("-", " ", 1)
 
@@ -56,8 +57,7 @@ def basic_parser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
-    # Cannot use argparse.FileType as we need to know the encoding from the
-    # args
+    # Can't use argparse.FileType as we need to know the encoding from the args
 
     if multi_input:
         parser.add_argument(
@@ -120,6 +120,9 @@ def basic_parser(
     parser.add_argument(
         "--encoding", "-e", help="the encoding to read/write files in (default: utf8)"
     )
+
+    # if len(sys.argv) == 1:
+    #     parser.error("unrecognized arguments: None")
     return parser
 
 
