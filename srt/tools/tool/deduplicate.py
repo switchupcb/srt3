@@ -2,9 +2,10 @@
 
 """Merge multiple subtitles together into one."""
 
-from .. import utils
 import datetime
 import logging
+from .. import utils
+
 
 log = logging.getLogger(__name__)
 

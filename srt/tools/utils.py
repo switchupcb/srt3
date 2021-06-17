@@ -2,12 +2,12 @@
 
 import argparse
 import codecs
-import srt
 import sys
 import itertools
 import collections
 import os
 import logging
+import srt
 
 
 PROG_NAME = os.path.basename(sys.argv[0]).replace("-", " ", 1)

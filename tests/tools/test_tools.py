@@ -34,9 +34,7 @@ def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
 
 
 def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=False):
-    # TODO: pytype doesn't like the mixed types in the matrix, but this works
-    # fine. Maybe it would be happier with a namedtuple?
-    cmd.insert(0, sys.executable)  # pytype: disable=attribute-error
+    cmd.insert(0, sys.executable)
     cmd.insert(1, "srt/tools/srt")
     in_file = os.path.join(sample_dir, "ascii.srt")
     in_file_gb = os.path.join(sample_dir, "gb2312.srt")

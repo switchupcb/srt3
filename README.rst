@@ -28,8 +28,8 @@ Why choose this library?
 
 - Parses broken SRT files other libraries can't and fixes them
 - Support for Asian-style SRT formats (ie. "fullwidth" SRT format)
-- Includes tools that allow you to perform tasks using the library
 - Extremely lightweight with a `Well Documented API`_
+- Includes tools that allow you to perform tasks using the library
 - No Dependencies outside of the Standard Library
 - High quality test suite using Hypothesis_
 - `~30% faster than pysrt on typical workloads`_

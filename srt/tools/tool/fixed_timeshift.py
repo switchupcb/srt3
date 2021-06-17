@@ -2,9 +2,9 @@
 
 """Shifts a subtitle by a fixed number of seconds."""
 
-from .. import utils
 import datetime
 import logging
+from .. import utils
 
 log = logging.getLogger(__name__)
 

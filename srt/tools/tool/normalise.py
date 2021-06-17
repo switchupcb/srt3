@@ -2,8 +2,8 @@
 
 """Takes a badly formatted SRT file and outputs a strictly valid one."""
 
-from .. import utils
 import logging
+from .. import utils
 
 log = logging.getLogger(__name__)
 

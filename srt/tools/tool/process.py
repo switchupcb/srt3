@@ -2,9 +2,9 @@
 
 """Process subtitle text content using arbitrary Python code."""
 
-from .. import utils
 import importlib
 import logging
+from .. import utils
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,8 @@ def strip_to_matching_lines_only(subtitles, imports, func_str):
         real_import = importlib.import_module(import_name)
         globals()[import_name] = real_import
 
-    func = eval(func_str)  # pylint: disable-msg=eval-used
+    # process and lines_matching should be merged.
+    func = eval(func_str)  # nosec pylint: disable-msg=eval-used
 
     for subtitle in subtitles:
         subtitle.content = func(subtitle.content)

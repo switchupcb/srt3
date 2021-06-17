@@ -1,3 +1,4 @@
+"""srt tools perform tasks using the srt module."""
 import os
 import importlib
 

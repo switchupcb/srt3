@@ -20,7 +20,7 @@ class TestImportSRT(unittest.TestCase):
             print(
                 [
                     member
-                    for member in dir(srt.tools.remove)
+                    for member in dir(srt.tools.remove)  # e
                     if not member.startswith("__")
                 ]
             )

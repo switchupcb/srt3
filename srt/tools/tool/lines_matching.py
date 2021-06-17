@@ -24,7 +24,8 @@ def strip_to_matching_lines_only(subtitles, imports, func_str, invert, per_sub):
         real_import = importlib.import_module(import_name)
         globals()[import_name] = real_import
 
-    raw_func = eval(func_str)  # pylint: disable-msg=eval-used
+    # process and lines_matching should be merged.
+    raw_func = eval(func_str)  # nosec pylint: disable-msg=eval-used
 
     if invert:
         func = lambda line: not raw_func(line)

@@ -2,10 +2,10 @@
 
 """Remove subtitles by index or timestamp."""
 
-from .. import utils
-import srt
 import datetime
 import logging
+import srt
+from .. import utils
 
 log = logging.getLogger(__name__)
 
