@@ -3,7 +3,7 @@
 """Takes a badly formatted SRT file and outputs a strictly valid one."""
 
 import logging
-from .. import utils
+from . import utils
 
 log = logging.getLogger(__name__)
 

@@ -5,7 +5,7 @@
 import datetime
 import logging
 import srt
-from .. import utils
+from . import utils
 
 log = logging.getLogger(__name__)
 

@@ -2,7 +2,7 @@
 
 """Filter subtitles that match or don't match a particular pattern."""
 
-from .. import utils
+from . import utils
 import importlib
 import logging
 

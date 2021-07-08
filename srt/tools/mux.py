@@ -5,7 +5,7 @@
 import datetime
 import operator
 import logging
-from .. import utils
+from . import utils
 
 log = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import unittest
 from . import *
-from srt.tools.tool.remove import *
+from srt.tools.remove import *
 
 
 class TestToolRemove(unittest.TestCase):

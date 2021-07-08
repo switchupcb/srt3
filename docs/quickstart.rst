@@ -69,5 +69,5 @@ Import Guide
     tools.remove.remove_by_timestamp()
 
     # import all members from a tool module.
-    from srt.tools.tool.remove import *
+    from srt.tools.remove import *
     remove_by_timestamp()
