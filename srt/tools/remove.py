@@ -61,7 +61,10 @@ def split(subs, timestamp):
 
 
 def remove_by_timestamp(
-    subs, timestamp_one=datetime.timedelta(0), timestamp_two=datetime.timedelta(0)
+    subs,
+    timestamp_one=datetime.timedelta(0),
+    timestamp_two=datetime.timedelta(0),
+    adjust=False,
 ):
     """
     Removes captions from subtitles by timestamp.
@@ -71,6 +74,7 @@ def remove_by_timestamp(
     :param subs: :py:class:`Subtitle` objects
     :param datetime.timedelta timestamp_one: The timestamp to remove from.
     :param datetime.timedelta timestamp_two: The timestamp to remove to.
+    :param boolean: Whether to adjust the timestamps of non-removed captions.
     :rtype: :term:`generator` of :py:class:`Subtitle` objects
     """
     # ensures list compatibility
@@ -99,12 +103,14 @@ def remove_by_timestamp(
     subs = split(subs, timestamp_two)
 
     # remove the captions using a generator.
+    adjust_time = timestamp_two if adjust else datetime.timedelta(0)
     idx = 1
     if sequential:
         # keep captions before timestamp one
         if first_subtitle.start < timestamp_one:
             yield first_subtitle
             idx += 1
+
             for subtitle in subs:
                 if timestamp_one <= subtitle.start:
                     break
@@ -114,31 +120,56 @@ def remove_by_timestamp(
         # remove captions after timestamp one but before timestamp two
         for subtitle in subs:
             if timestamp_two <= subtitle.start:
-                yield srt.Subtitle(idx, subtitle.start, subtitle.end, subtitle.content)
+                yield srt.Subtitle(
+                    idx,
+                    subtitle.start - adjust_time,
+                    subtitle.end - adjust_time,
+                    subtitle.content,
+                )
                 idx += 1
                 break
 
         # keep captions after timestamp two
         for subtitle in subs:
-            yield srt.Subtitle(idx, subtitle.start, subtitle.end, subtitle.content)
+            yield srt.Subtitle(
+                idx,
+                subtitle.start - adjust_time,
+                subtitle.end - adjust_time,
+                subtitle.content,
+            )
             idx += 1
     else:
         # remove captions before timestamp two
         if first_subtitle.start < timestamp_two:
             for subtitle in subs:
                 if timestamp_two <= subtitle.start:
-                    yield subtitle
+                    yield srt.Subtitle(
+                        idx,
+                        subtitle.start - adjust_time,
+                        subtitle.end - adjust_time,
+                        subtitle.content,
+                    )
                     idx += 1
                     break
         else:
-            yield first_subtitle
+            yield srt.Subtitle(
+                idx,
+                first_subtitle.start - adjust_time,
+                first_subtitle.end - adjust_time,
+                first_subtitle.content,
+            )
             idx += 1
 
         # keep captions after timestamp two but before timestamp one
         for subtitle in subs:
             if timestamp_one <= subtitle.start:
                 break
-            yield srt.Subtitle(idx, subtitle.start, subtitle.end, subtitle.content)
+            yield srt.Subtitle(
+                idx,
+                subtitle.start - adjust_time,
+                subtitle.end - adjust_time,
+                subtitle.content,
+            )
             idx += 1
 
         # remove captions after timestamp one
@@ -152,7 +183,7 @@ def parse_args():
         "Remove captions within :05 - :08": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00",
         "Remove captions non-sequentially": "srt remove -i example.srt --t1 00:00:8,00 --t2 00:00:5,00",
         "Remove captions from :16 to the end of the file.": "srt remove -i example.srt --t1 00:00:16,00",
-        "Remove captions from :00 to :16": "srt remove -i example.srt --t2 00:00:16,00",
+        "Remove from :00 to :16 and adjust subsequent captions": "srt remove -i example.srt --t2 00:00:16,00",
         "Remove every caption": "srt remove -i example.srt",
     }
     parser = utils.basic_parser(description=__doc__, examples=examples)
@@ -174,6 +205,12 @@ def parse_args():
         nargs="?",
         help="The timestamp to stop removing at.",
     )
+    parser.add_argument(
+        "--at",
+        "--adjust",
+        action="store_true",
+        help="Adjust the timestamps of non-removed captions",
+    )
     return parser.parse_args()
 
 
@@ -181,7 +218,7 @@ def main():
     args = parse_args()
     logging.basicConfig(level=args.log_level)
     utils.set_basic_args(args)
-    removed_subs = remove_by_timestamp(args.input, args.start, args.end)
+    removed_subs = remove_by_timestamp(args.input, args.start, args.end, args.adjust)
     output = utils.compose_suggest_on_fail(removed_subs, strict=args.strict)
     args.output.write(output)
 

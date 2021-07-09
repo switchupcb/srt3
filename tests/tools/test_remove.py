@@ -56,6 +56,42 @@ class TestToolRemove(unittest.TestCase):
         result = remove_by_timestamp(self.subs(), self.x[0].start, self.x[0].start)
         self.assertEqual(list(result), [])
 
+    def test_remove_by_timestamp_adjust(self):
+        result = remove_by_timestamp(
+            self.subs(), self.x[0].start, t("00:00:14,500"), True
+        )
+        a = [
+            srt.Subtitle(1, t("00:00:00,000"), t("00:00:05,238"), "C"),
+            srt.Subtitle(2, t("00:00:02,038"), t("00:00:02,772"), "D"),
+            srt.Subtitle(3, t("00:00:02,772"), t("00:00:03,940"), "E"),
+        ]
+        self.assertEqual(list(result), a)
+
+        # split
+        result = remove_by_timestamp(
+            self.subs(), t("00:00:00,000"), t("00:00:17,500"), True
+        )
+        a = [
+            srt.Subtitle(1, t("00:00:00,000"), t("00:00:00,940"), "E"),
+            srt.Subtitle(2, t("00:00:00,000"), t("00:00:02,238"), "C"),
+        ]
+        self.assertEqual(list(result), a)
+
+        # reverse timestamps
+        result = remove_by_timestamp(
+            self.subs(), t("00:00:30,000"), t("00:00:00,000"), True
+        )
+        self.assertEqual(list(result), self.x)
+
+        result = remove_by_timestamp(
+            self.subs(), t("00:00:14,500"), self.x[0].start, True
+        )
+        a = [
+            srt.Subtitle(1, t("00:00:00,000"), t("00:00:01,701"), "A"),
+            srt.Subtitle(2, t("00:00:01,701"), t("00:00:03,203"), "B"),
+        ]
+        self.assertEqual(list(result), a)
+
     def test_split(self):
         a = [
             srt.Subtitle(1, t("00:00:11,000"), t("00:00:12,701"), "A"),

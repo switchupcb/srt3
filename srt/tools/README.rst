@@ -58,7 +58,7 @@ Utilities
   you can naively strip some basic HTML-like markup with ``srt process -m re -f
   'lambda sub: re.sub("<[^<]+?>", "", sub)'``. HTML-like syntax is especially
   prevalent in `SSA/ASS`_ subtitles that have been directly converted to SRT.
-  - *remove* allows removal by timestamp in sequential or non-sequential
+- *remove* allows removal by timestamp in sequential or non-sequential
   order. By placing timestamps non-sequentially (i.e :08, :05), you specify
   to remove all captions past :08 and before :05.
 
