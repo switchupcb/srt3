@@ -61,6 +61,7 @@ Utilities
 - *remove* allows removal by timestamp in sequential or non-sequential
   order. By placing timestamps non-sequentially (i.e :08, :05), you specify
   to remove all captions past :08 and before :05.
+- *split* allows the splitting of captions at a timestamp.
 
 .. _mux: https://en.wikipedia.org/wiki/Multiplexing
 .. _`SSA/ASS`: https://en.wikipedia.org/wiki/SubStation_Alpha

@@ -10,56 +10,6 @@ from . import utils
 log = logging.getLogger(__name__)
 
 
-def split(subs, timestamp):
-    """
-    Splits subtitles at a given timestamp.
-
-    :param subs: :py:class:`Subtitle` objects
-    :param datetime.timedelta timestamp: The timestamp to split subtitles at.
-    :rtype: :term:`generator` of :py:class:`Subtitle` objects
-    """
-    # ensures list compatibility
-    from types import GeneratorType
-
-    subs = (x for x in subs) if not isinstance(subs, GeneratorType) else subs
-
-    # yield unsplit captions before the timestamp
-    idx = 1
-    break_subtitle = None
-    split_subs = []
-    for subtitle in subs:
-        if subtitle.start < timestamp and timestamp < subtitle.end:
-            yield srt.Subtitle(idx, subtitle.start, timestamp, subtitle.content)
-            subtitle.start = timestamp
-            split_subs.append(subtitle)
-            idx += 1
-        elif subtitle.start == timestamp:
-            split_subs.append(subtitle)
-        elif subtitle.start > timestamp:
-            break_subtitle = subtitle
-            break
-        else:
-            yield subtitle
-            idx += 1
-
-    # yield split captions (sort to adjust index first)
-    split_subs.sort()
-    for subtitle in split_subs:
-        yield srt.Subtitle(idx, timestamp, subtitle.end, subtitle.content)
-        idx += 1
-
-    # yield unsplit captions after the timestamp
-    if break_subtitle:
-        yield srt.Subtitle(
-            idx, break_subtitle.start, break_subtitle.end, break_subtitle.content
-        )
-        idx += 1
-
-    for subtitle in subs:
-        yield srt.Subtitle(idx, subtitle.start, subtitle.end, subtitle.content)
-        idx += 1
-
-
 def remove_by_timestamp(
     subs,
     timestamp_one=datetime.timedelta(0),
@@ -99,8 +49,8 @@ def remove_by_timestamp(
         return
 
     # Split the caption at the start and end of the block(s).
-    subs = split(subs, timestamp_one)
-    subs = split(subs, timestamp_two)
+    subs = srt.tools.split.split(subs, timestamp_one)
+    subs = srt.tools.split.split(subs, timestamp_two)
 
     # remove the captions using a generator.
     adjust_time = timestamp_two if adjust else datetime.timedelta(0)
