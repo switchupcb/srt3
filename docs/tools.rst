@@ -10,6 +10,7 @@ Tools Documentation
    :template: tool.rst
    :recursive:
 
+   srt.tools.add
    srt.tools.deduplicate
    srt.tools.fixed_timeshift
    srt.tools.linear_timeshift

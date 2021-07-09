@@ -31,6 +31,7 @@ example:
 Utilities
 ---------
 
+- *add* adds a subtitle to subtitles.
 - *deduplicate* removes subtitles with duplicate content. If you have subtitles
   which mistakenly repeat the same content in different subs at roughly the
   same time, you can run this tool to remove them.
