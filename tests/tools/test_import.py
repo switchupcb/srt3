@@ -20,7 +20,7 @@ class TestImportSRT(unittest.TestCase):
             print(
                 [
                     member
-                    for member in dir(srt.tools.remove)
+                    for member in dir(srt.tools.find)
                     if not member.startswith("__")
                 ]
             )
@@ -42,9 +42,9 @@ class TestImportSRT(unittest.TestCase):
 
             # only import the remove module from the tools package in the srt package.
             print("\nonly remove module")
-            from srt.tools import remove
+            from srt.tools import find
 
-            print([member for member in dir(remove) if not member.startswith("__")])
+            print([member for member in dir(find) if not member.startswith("__")])
 
         except AttributeError:
             self.fail("AttributeError raised during module import.")

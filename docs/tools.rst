@@ -11,6 +11,7 @@ Tools Documentation
    :recursive:
 
    srt.tools.add
+   srt.tools.find
    srt.tools.deduplicate
    srt.tools.fixed_timeshift
    srt.tools.linear_timeshift
@@ -18,4 +19,3 @@ Tools Documentation
    srt.tools.mux
    srt.tools.normalise
    srt.tools.process
-   srt.tools.remove

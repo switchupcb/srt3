@@ -32,6 +32,9 @@ Utilities
 ---------
 
 - *add* adds a subtitle to subtitles.
+- *find* allows finding by timestamp in sequential or non-sequential
+  order. By placing timestamps non-sequentially (i.e :08, :05), you specify
+  to find all captions past :08 and before :05.
 - *deduplicate* removes subtitles with duplicate content. If you have subtitles
   which mistakenly repeat the same content in different subs at roughly the
   same time, you can run this tool to remove them.
@@ -59,9 +62,6 @@ Utilities
   you can naively strip some basic HTML-like markup with ``srt process -m re -f
   'lambda sub: re.sub("<[^<]+?>", "", sub)'``. HTML-like syntax is especially
   prevalent in `SSA/ASS`_ subtitles that have been directly converted to SRT.
-- *remove* allows removal by timestamp in sequential or non-sequential
-  order. By placing timestamps non-sequentially (i.e :08, :05), you specify
-  to remove all captions past :08 and before :05.
 - *split* allows the splitting of captions at a timestamp.
 
 .. _mux: https://en.wikipedia.org/wiki/Multiplexing

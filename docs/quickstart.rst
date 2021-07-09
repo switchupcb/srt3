@@ -62,12 +62,12 @@ Import Guide
     ### Use srt tools
     import srt
     # srt.tools.tool.func()
-    srt.tools.remove.remove_by_timestamp()
+    srt.tools.find.find_by_timestamp()
 
     from srt import tools
     # tools.tool.func()
-    tools.remove.remove_by_timestamp()
+    tools.find.find_by_timestamp()
 
     # import all members from a tool module.
     from srt.tools.remove import *
-    remove_by_timestamp()
+    find_by_timestamp()

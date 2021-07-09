@@ -1,6 +1,6 @@
-﻿srt.tools.remove
+﻿srt.tools.find
 ===============================================================================
 
-.. automodule:: srt.tools.remove
+.. automodule:: srt.tools.find
    :members:
    :exclude-members:
