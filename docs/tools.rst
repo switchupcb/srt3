@@ -18,4 +18,5 @@ Tools Documentation
    srt.tools.lines_matching
    srt.tools.mux
    srt.tools.normalise
+   srt.tools.paste
    srt.tools.process
