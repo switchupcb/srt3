@@ -31,6 +31,8 @@ def find_by_timestamp(
     from types import GeneratorType
 
     subs = (x for x in subs) if not isinstance(subs, GeneratorType) else subs
+    adjust_time = timestamp_one if adjust else datetime.timedelta(0)
+    idx = 1
 
     # edge cases
     sequential = timestamp_one < timestamp_two
@@ -42,8 +44,22 @@ def find_by_timestamp(
     if timestamp_one == timestamp_two or (
         not sequential and timestamp_one <= first_subtitle.start
     ):
-        yield first_subtitle
-        yield from subs
+        yield srt.Subtitle(
+            idx,
+            first_subtitle.start - adjust_time,
+            first_subtitle.end - adjust_time,
+            first_subtitle.content,
+        )
+        idx += 1
+
+        for subtitle in subs:
+            yield srt.Subtitle(
+                idx,
+                subtitle.start - adjust_time,
+                subtitle.end - adjust_time,
+                subtitle.content,
+            )
+            idx += 1
         return
     elif sequential and timestamp_two <= first_subtitle.start:
         return
@@ -53,8 +69,6 @@ def find_by_timestamp(
     subs = srt.tools.split.split(subs, timestamp_two)
 
     # Find the captions using a generator.
-    adjust_time = timestamp_one if adjust else datetime.timedelta(0)
-    idx = 1
     if sequential:
         # remove captions before timestamp one
         if first_subtitle.start < timestamp_one:

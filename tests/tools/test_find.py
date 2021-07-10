@@ -3,7 +3,7 @@ from . import *
 from srt.tools.find import *
 
 
-class TestToolRemove(unittest.TestCase):
+class TestToolFind(unittest.TestCase):
     def setUp(self):
         self.subs = create_blocks
         self.x = list(create_blocks())
