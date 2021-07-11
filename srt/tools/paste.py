@@ -102,9 +102,9 @@ def paste(subs, copy, timestamp, space=datetime.timedelta(0), block=False):
 # Command Line Interface
 def set_args():
     examples = {
-        "Paste subtitles from :05 - :08 at :10": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00",
-        "Paste subtitles from :05 - :08 at :10 with :01 space beforehand": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00 -s 00:00:01,00",
-        "Paste subtitles from :05 - :08 at :10 and adjust all subsequent subtitles": "srt remove -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00 -b",
+        "Paste subtitles from :05 - :08 at :10": "srt paste -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00",
+        "Paste subtitles from :05 - :08 at :10 with :01 space beforehand": "srt paste -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00 -s 00:00:01,00",
+        "Paste subtitles from :05 - :08 at :10 and adjust all subsequent subtitles": "srt paste -i example.srt --t1 00:00:5,00 --t2 00:00:8,00 -p 00:00:10,00 -b",
     }
     parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(

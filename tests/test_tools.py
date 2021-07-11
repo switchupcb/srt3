@@ -33,7 +33,7 @@ def run_srt_util(cmd, shell=False, encoding="utf-8-sig"):
 
 def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=False):
     cmd.insert(0, sys.executable)
-    cmd.insert(1, "srt/tools/srt")
+    cmd.insert(1, "srt/tools/_srt.py")
     in_file = os.path.join(sample_dir, "ascii.srt")
     in_file_gb = os.path.join(sample_dir, "gb2312.srt")
     fd, out_file = tempfile.mkstemp()
@@ -63,7 +63,11 @@ def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=Fals
                 )
                 run_srt_util(
                     "%s < %s > %s"
-                    % (cmd_string + " --encoding gb2312", quote(in_file), quote(out_file)),
+                    % (
+                        cmd_string + " --encoding gb2312",
+                        quote(in_file),
+                        quote(out_file),
+                    ),
                     shell=True,
                     encoding="gb2312",
                 )

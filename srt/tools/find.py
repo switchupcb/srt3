@@ -68,11 +68,11 @@ def find_by_timestamp(
 # Command Line Interface
 def set_args():
     examples = {
-        "Find subtitles from :05 - :08": "srt remove -i example.srt -s 00:00:5,00 -e 00:00:8,00",
-        "Find subtitles from :00 - :05 and :08 onwards": "srt remove -i example.srt -s 00:00:8,00 -e 00:00:5,00",
-        "Find subtitles from :00 - :16 and adjust the timestamps of found subtitles": "srt remove -i example.srt -e 00:00:16,00",
-        "Find subtitles from :16 onwards and zero the block.": "srt remove -i example.srt -s 00:00:16,00 -a",
-        "Find every subtitle": "srt remove -i example.srt",
+        "Find subtitles from :05 - :08": "srt find -i example.srt -s 00:00:5,00 -e 00:00:8,00",
+        "Find subtitles from :00 - :05 and :08 onwards": "srt find -i example.srt -s 00:00:8,00 -e 00:00:5,00",
+        "Find subtitles from :00 - :16 and adjust the timestamps of found subtitles": "srt find -i example.srt -e 00:00:16,00",
+        "Find subtitles from :16 onwards and zero the block.": "srt find -i example.srt -s 00:00:16,00 -a",
+        "Find every subtitle": "srt find -i example.srt",
     }
     parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(

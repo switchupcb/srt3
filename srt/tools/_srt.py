@@ -4,6 +4,7 @@ import os
 import sys
 import importlib
 
+
 def commands():
     commands = set()
     folder_path = os.path.normpath(os.path.join(__file__, os.pardir))
@@ -11,6 +12,7 @@ def commands():
         if not script.startswith("_") and script.endswith(".py"):
             commands.add(script[:-3])
     return sorted(commands)
+
 
 def show_help():
     print(
@@ -33,8 +35,9 @@ def main():
         sys.exit(1)
 
     sys.argv = sys.argv[1:]
-    module = importlib.import_module('srt.tools.' + command, '')
+    module = importlib.import_module("srt.tools." + command, "")
     module.main()
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()

@@ -72,8 +72,8 @@ def add(subs, start, end, content="", adjust=False):
 # Command Line Interface
 def set_args():
     examples = {
-        "Add a subtitle": "srt add -i example.srt --start 00:00:5,00 --end 00:00:5,00 --content srt3 is awesome.",
-        "Add a subtitle and adjust subsequent ones": "srt add -i example.srt --start 00:00:5,00 --end 00:00:5,00 --content srt3 is awesome.",
+        "Add a subtitle": 'srt add -i example.srt -s 00:00:5,00 -e 00:00:5,00 -c "srt3 is awesome."',
+        "Add a subtitle and adjust subsequent ones": 'srt add -i example.srt -s 00:00:5,00 -e 00:00:5,00 --c "srt3 is awesome." -a',
     }
     parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(

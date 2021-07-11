@@ -1,19 +1,19 @@
-|travis| |lgtm| |coveralls| |libraries|
+|ghactions| |lgtm| |coveralls| |libraries|
 
-.. |travis| image:: https://travis-ci.com/switchupcb/srt.svg?branch=develop
-  :target: https://travis-ci.com/switchupcb/srt
-  :alt: Tests
+.. |ghactions| image:: https://github.com/switchupcb/srt3/actions/workflows/python-package.yml/badge.svg
+  :target: https://github.com/switchupcb/srt3/actions
+  :alt: Github Actions
 
-.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/github/switchupcb/srt.svg?label=code%20quality
-  :target: https://lgtm.com/projects/g/switchupcb/srt/overview/
+.. |lgtm| image:: https://img.shields.io/lgtm/grade/python/github/switchupcb/srt3.svg?label=code%20quality
+  :target: https://lgtm.com/projects/g/switchupcb/srt3/overview/
   :alt: LGTM
 
-.. |coveralls| image:: https://img.shields.io/coveralls/switchupcb/srt/develop.svg?label=test%20coverage
-  :target: https://coveralls.io/github/switchupcb/srt?branch=develop
+.. |coveralls| image:: https://img.shields.io/coveralls/switchupcb/srt3/develop.svg?label=test%20coverage
+  :target: https://coveralls.io/github/switchupcb/srt3?branch=develop
   :alt: Coverage
 
-.. |libraries| image:: https://img.shields.io/librariesio/github/switchupcb/srt.svg?label=dependencies
-  :target: https://libraries.io/github/switchupcb/srt
+.. |libraries| image:: https://img.shields.io/librariesio/github/switchupcb/srt3.svg?label=dependencies
+  :target: https://libraries.io/github/switchupcb/srt3
   :alt: Dependencies
 
 srt3 is a simple yet featureful Python library for parsing, modifying, and
@@ -137,13 +137,13 @@ To install the latest stable version from PyPi:
 
 .. code::
 
-    pip install -U srt
+    pip install -U srt3
 
 To install the latest development version directly from GitHub:
 
 .. code::
 
-    pip install -U git+https://github.com/switchupcb/srt.git@develop
+    pip install -U git+https://github.com/switchupcb/srt3.git@develop
 
 .. _`Detailed API documentation`: http://srt3.readthedocs.org/en/latest/api.html
-.. _`tools shipped with the library`: https://github.com/switchupcb/srt/tree/develop/srt/tools
+.. _`tools shipped with the library`: https://github.com/switchupcb/srt3/tree/develop/srt/tools

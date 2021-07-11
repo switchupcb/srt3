@@ -1,11 +1,11 @@
-srt tools contains tools written to process SRT files. All tools use
+srt3 tools contains tools written to process SRT files. All tools use
 the Python srt3_ library internally.
 
-.. _srt3: https://github.com/switchupcb/srt
+.. _srt3: https://github.com/switchupcb/srt3
 
 Library Usage
 -------------
-You can use the srt tools module in your python projects. Check the `Detailed
+You can use the srt3 tools module in your python projects. Check the `Detailed
 API documentation`_ for more information.
 
 Command Line Interface Usage
