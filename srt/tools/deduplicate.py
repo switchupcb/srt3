@@ -4,15 +4,15 @@
 
 import datetime
 import logging
-from . import utils
+from . import _cli
 
 
 log = logging.getLogger(__name__)
 
 
-def deduplicate_subs(orig_subs, acceptable_diff):
+def deduplicate(orig_subs, acceptable_diff):
     r"""
-    Remove subtitles with duplicated content.
+    Removes subtitles with duplicated content.
 
     :param orig_subs: :py:class:`Subtitle` objects
     :param datetime.timedelta acceptable_diff: The amount of milliseconds
@@ -31,7 +31,7 @@ def deduplicate_subs(orig_subs, acceptable_diff):
         enumerate(orig_subs), key=lambda sub: (sub[1].content, sub[1].start)
     )
 
-    for subs in utils.sliding_window(sorted_subs, width=2, inclusive=False):
+    for subs in _cli.sliding_window(sorted_subs, width=2, inclusive=False):
         cur_idx, cur_sub = subs[0]
         next_idx, next_sub = subs[1]
 
@@ -53,19 +53,19 @@ def deduplicate_subs(orig_subs, acceptable_diff):
         offset += 1
 
 
-def parse_args():
+def set_args():
     examples = {
         "Remove duplicated subtitles within 5 seconds of each other": "srt deduplicate -i duplicated.srt",
         "Remove duplicated subtitles within 500 milliseconds of each other": "srt deduplicate -t 500 -i duplicated.srt",
         "Remove duplicated subtitles regardless of temporal proximity": "srt deduplicate -t 0 -i duplicated.srt",
     }
-    parser = utils.basic_parser(
+    parser = _cli.basic_parser(
         description=__doc__,
         examples=examples,
     )
     parser.add_argument(
-        "-t",
         "--ms",
+        "-t",
         metavar="MILLISECONDS",
         default=datetime.timedelta(milliseconds=5000),
         type=lambda ms: datetime.timedelta(milliseconds=int(ms)),
@@ -78,13 +78,13 @@ def parse_args():
 
 
 def main():
-    args = parse_args()
+    args = set_args()
     logging.basicConfig(level=args.log_level)
-    utils.set_basic_args(args)
+    _cli.set_basic_args(args)
 
     subs = list(args.input)
-    deduplicate_subs(subs, args.ms)
-    output = utils.compose_suggest_on_fail(subs, strict=args.strict)
+    deduplicate(subs, args.ms)
+    output = _cli.compose_suggest_on_fail(subs, strict=args.strict)
     args.output.write(output)
 
 

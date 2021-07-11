@@ -5,7 +5,7 @@
 import datetime
 import logging
 import srt
-from . import utils
+from . import _cli
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ def _correct_timedelta(bad_delta, angular, linear):
     return good_delta
 
 
-def linear_correct_subs(subtitles, angular, linear):
+def timeshift(subtitles, angular, linear):
     """
     Performs a linear timeshift on given subtitles.
 
@@ -42,7 +42,7 @@ def linear_correct_subs(subtitles, angular, linear):
         yield subtitle
 
 
-def parse_args():
+def set_args():
     def _srt_timestamp_to_milliseconds(parser, arg):
         try:
             delta = srt.srt_timestamp_to_timedelta(arg)
@@ -55,47 +55,47 @@ def parse_args():
         "Stretch out a subtitle so that second 1 is 2, 2 is 4, etc": "srt linear_timeshift --f1 00:00:01,000 --t1 00:00:01,000 --f2 00:00:02,000 --t2 00:00:03,000"
     }
 
-    parser = utils.basic_parser(description=__doc__, examples=examples)
+    parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(
         "--from-start",
         "--f1",
         type=lambda arg: _srt_timestamp_to_milliseconds(parser, arg),
         required=True,
-        help="the first desynchronised timestamp",
-    )
-    parser.add_argument(
-        "--to-start",
-        "--t1",
-        type=lambda arg: _srt_timestamp_to_milliseconds(parser, arg),
-        required=True,
-        help="the first synchronised timestamp",
+        help="The first desynchronised timestamp.",
     )
     parser.add_argument(
         "--from-end",
         "--f2",
         type=lambda arg: _srt_timestamp_to_milliseconds(parser, arg),
         required=True,
-        help="the second desynchronised timestamp",
+        help="The second desynchronised timestamp.",
+    )
+    parser.add_argument(
+        "--to-start",
+        "--t1",
+        type=lambda arg: _srt_timestamp_to_milliseconds(parser, arg),
+        required=True,
+        help="The first synchronised timestamp.",
     )
     parser.add_argument(
         "--to-end",
         "--t2",
         type=lambda arg: _srt_timestamp_to_milliseconds(parser, arg),
         required=True,
-        help="the second synchronised timestamp",
+        help="The second synchronised timestamp.",
     )
     return parser.parse_args()
 
 
 def main():
-    args = parse_args()
+    args = set_args()
     logging.basicConfig(level=args.log_level)
     angular, linear = _calc_correction(
         args.to_start, args.to_end, args.from_start, args.from_end
     )
-    utils.set_basic_args(args)
-    corrected_subs = linear_correct_subs(args.input, angular, linear)
-    output = utils.compose_suggest_on_fail(corrected_subs, strict=args.strict)
+    _cli.set_basic_args(args)
+    corrected_subs = timeshift(args.input, angular, linear)
+    output = _cli.compose_suggest_on_fail(corrected_subs, strict=args.strict)
     args.output.write(output)
 
 

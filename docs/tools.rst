@@ -17,5 +17,5 @@ Tools Documentation
    srt.tools.linear_timeshift
    srt.tools.match
    srt.tools.mux
-   srt.tools.normalise
+   srt.tools.normalize
    srt.tools.paste

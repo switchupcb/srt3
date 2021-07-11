@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-"""Merge multiple subtitles together into one."""
+"""Merge multiple subtitles with similar start/end times into one."""
 
 import datetime
 import operator
 import logging
-from . import utils
+from . import _cli
 
 log = logging.getLogger(__name__)
 
@@ -13,9 +13,9 @@ TOP = r"{\an8}"
 BOTTOM = r"{\an2}"
 
 
-def merge_subs(subs, acceptable_diff, attr, width):
+def mux(subs, acceptable_diff, attr, width):
     """
-    Merge subs with similar start/end times together (in-place).
+    Merges subs with similar start/end times together (in-place).
     This prevents subtitles from jumping around the screen.
 
     :param subs: :py:class:`Subtitle` objects
@@ -27,7 +27,7 @@ def merge_subs(subs, acceptable_diff, attr, width):
     """
     sorted_subs = sorted(subs, key=operator.attrgetter(attr))
 
-    for subs in utils.sliding_window(sorted_subs, width=width):
+    for subs in _cli.sliding_window(sorted_subs, width=width):
         current_sub = subs[0]
         future_subs = subs[1:]
         current_comp = getattr(current_sub, attr)
@@ -48,48 +48,46 @@ def merge_subs(subs, acceptable_diff, attr, width):
                 break
 
 
-def parse_args():
+def set_args():
     examples = {
         "Merge English and Chinese subtitles": "srt mux -i eng.srt -i chs.srt -o both.srt",
         "Merge subtitles with one on top and one at the bottom": "srt mux -t -i eng.srt -i chs.srt -o both.srt",
     }
-    parser = utils.basic_parser(
-        description=__doc__, examples=examples, multi_input=True
-    )
+    parser = _cli.basic_parser(description=__doc__, examples=examples, multi_input=True)
     parser.add_argument(
         "--ms",
         metavar="MILLISECONDS",
         default=datetime.timedelta(milliseconds=600),
         type=lambda ms: datetime.timedelta(milliseconds=int(ms)),
-        help="if subs being muxed are within this number of milliseconds "
-        "of each other, they will have their times matched (default: 600)",
+        help="Match to-be-muxed subs within this number of milliseconds (default: 600).",
     )
     parser.add_argument(
-        "-w",
         "--width",
+        "-w",
         default=5,
         type=int,
-        help="how many subs to consider for time matching at once (default: %(default)s)",
+        help="The amount of subs to consider time matching at once (default: %(default)s)",
     )
     parser.add_argument(
-        "-t",
         "--top-and-bottom",
+        "-t",
         action="store_true",
-        help="use SSA-style tags to place files at the top and bottom, respectively. Turns off time matching",
+        help="Use SSA-style tags to place files at the top and bottom, respectively. Turns off time matching.",
     )
     parser.add_argument(
         "--no-time-matching",
+        "--nt",
         action="store_true",
-        help="don't try to do time matching for close subtitles (see --ms)",
+        help="Prevents time matching for close subtitles (see --ms)",
     )
     return parser.parse_args()
 
 
 def main():
-    args = parse_args()
+    args = set_args()
     logging.basicConfig(level=args.log_level)
 
-    utils.set_basic_args(args)
+    _cli.set_basic_args(args)
 
     muxed_subs = []
     for idx, subs in enumerate(args.input):
@@ -102,10 +100,10 @@ def main():
             muxed_subs.append(sub)
 
     if args.no_time_matching or not args.top_and_bottom:
-        merge_subs(muxed_subs, args.ms, "start", args.width)
-        merge_subs(muxed_subs, args.ms, "end", args.width)
+        mux(muxed_subs, args.ms, "start", args.width)
+        mux(muxed_subs, args.ms, "end", args.width)
 
-    output = utils.compose_suggest_on_fail(muxed_subs, strict=args.strict)
+    output = _cli.compose_suggest_on_fail(muxed_subs, strict=args.strict)
     args.output.write(output)
 
 

@@ -28,7 +28,7 @@ exclude_patterns = ["_build"]
 
 
 def exclude_cli_methods(app, what, name, obj, skip, options):
-    return "main" == name or "parse_args" == name or name.startswith("_")
+    return "main" == name or "set_args" == name or name.startswith("_")
 
 
 def setup(app):

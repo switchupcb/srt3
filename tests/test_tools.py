@@ -53,7 +53,7 @@ def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=Fals
         if not exclude_output:
             run_srt_util(cmd + ["-i", in_file, "-o", out_file])
             run_srt_util(
-                cmd + ["-i", in_file_gb, "-o", out_file, "-e", "gb2312"],
+                cmd + ["-i", in_file_gb, "-o", out_file, "--encoding", "gb2312"],
                 encoding="gb2312",
             )
             if not exclude_stdin:
@@ -63,7 +63,7 @@ def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=Fals
                 )
                 run_srt_util(
                     "%s < %s > %s"
-                    % (cmd_string + " -e gb2312", quote(in_file), quote(out_file)),
+                    % (cmd_string + " --encoding gb2312", quote(in_file), quote(out_file)),
                     shell=True,
                     encoding="gb2312",
                 )
@@ -79,7 +79,9 @@ def assert_supports_all_io_methods(cmd, exclude_output=False, exclude_stdin=Fals
 
 def test_tools_support():
     matrix = [
+        (["add", "-s", "00:00:01,000", "-e", "00:00:02,000", "-c", "test"], False),
         (["deduplicate"], False),
+        (["find"], False),
         (["fixed_timeshift", "--seconds", "5"], False),
         (
             [
@@ -98,7 +100,8 @@ def test_tools_support():
         (["match", "--fm", "lambda x: True"], False),
         (["mux"], False, True),
         (["mux", "-t"], False, True),
-        (["normalise"], False),
+        (["normalize"], False),
+        (["paste"], False),
     ]
 
     for args in matrix:

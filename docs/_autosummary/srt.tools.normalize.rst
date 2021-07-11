@@ -1,6 +1,6 @@
-﻿srt.tools.normalise
+﻿srt.tools.normalize
 ===============================================================================
 
-.. automodule:: srt.tools.normalise
+.. automodule:: srt.tools.normalize
    :members:
    :exclude-members:

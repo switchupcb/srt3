@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 
-"""Shifts a subtitle by a fixed number of seconds."""
+"""Shifts subtitles by a fixed number of seconds."""
 
 import datetime
 import logging
-from . import utils
+from . import _cli
 
 log = logging.getLogger(__name__)
 
 
-def scalar_correct_subs(subtitles, seconds_to_shift):
+def timeshift(subtitles, seconds_to_shift):
     """
     Performs a fixed timeshift on given subtitles.
 
@@ -24,25 +24,29 @@ def scalar_correct_subs(subtitles, seconds_to_shift):
         yield subtitle
 
 
-def parse_args():
+def set_args():
     examples = {
-        "Make all subtitles 5 seconds later": "srt fixed_timeshift --seconds 5",
+        "Make all subtitles 5 seconds later": "srt fixed_timeshift -s 5",
         "Make all subtitles 5 seconds earlier": "srt fixed_timeshift --seconds -5",
     }
 
-    parser = utils.basic_parser(description=__doc__, examples=examples)
+    parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(
-        "--seconds", type=float, required=True, help="how many seconds to shift"
+        "--seconds",
+        "-s",
+        type=float,
+        required=True,
+        help="The amount of seconds to shift subtitiles by.",
     )
     return parser.parse_args()
 
 
 def main():
-    args = parse_args()
+    args = set_args()
     logging.basicConfig(level=args.log_level)
-    utils.set_basic_args(args)
-    corrected_subs = scalar_correct_subs(args.input, args.seconds)
-    output = utils.compose_suggest_on_fail(corrected_subs, strict=args.strict)
+    _cli.set_basic_args(args)
+    corrected_subs = timeshift(args.input, args.seconds)
+    output = _cli.compose_suggest_on_fail(corrected_subs, strict=args.strict)
     args.output.write(output)
 
 

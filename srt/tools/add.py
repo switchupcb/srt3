@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 
-"""Adds a subtitle to subtitles."""
+"""Add a subtitle to subtitles."""
 
 import datetime
 import logging
 import srt
-from . import utils
+from types import GeneratorType
+from . import _cli
+from . import _utils
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +19,7 @@ def add(subs, start, end, content="", adjust=False):
     :param subs: :py:class:`Subtitle` objects
     :param datetime.timedelta start: The timestamp the subtitle starts at.
     :param datetime.timedelta end: The timestamp the subtitle ends at.
-    :param boolean adjust: Whether to adjust the timestamps of subsequent captions.
+    :param boolean adjust: Whether to adjust the timestamps of subsequent subtitles.
     :rtype: :term:`generator` of :py:class:`Subtitle` objects
     """
     if end <= start:
@@ -26,76 +28,57 @@ def add(subs, start, end, content="", adjust=False):
         )
 
     # ensures list compatibility
-    from types import GeneratorType
-
     subs = (x for x in subs) if not isinstance(subs, GeneratorType) else subs
 
-    # Add subtitles before the added subtitle
+    # Add the subtitle in the correct position.
+    added = False
     idx = 1
-    add_subs = []
-    break_sub = None
-    for subtitle in subs:
-        # determine the correct position
-        if subtitle.start < start:
-            yield subtitle
-            idx += 1
-        elif start == subtitle.start:
-            add_subs.append(subtitle)
-        elif start < subtitle.start:
-            break_sub = subtitle
-            break
-
-    # add the subtitle to the correct position
     adjust_time = datetime.timedelta(0)
-    add_subs_len = len(add_subs)
-    if add_subs_len == 0:
-        adjust_time = end - start if adjust else adjust_time
-        yield srt.Subtitle(idx, start, end, content)
-        idx += 1
-    else:
-        for i in range(add_subs_len):
-            subtitle = add_subs[i]
+    subtitle = _utils.tryNext(subs)
+    while subtitle is not None:
+        subtitle_start = subtitle.start
 
-            if i + 1 < add_subs_len and subtitle.end <= end and end < add_subs[i + 1]:
-                adjust_time = end - start if adjust else adjust_time
-                yield srt.Subtitle(idx, start, end, content)
-                idx += 1
+        if not added and (
+            (start == subtitle_start and end < subtitle.end) or start < subtitle_start
+        ):
             yield srt.Subtitle(
                 idx,
-                subtitle.start + adjust_time,
-                subtitle.end + adjust_time,
-                subtitle.content,
+                start,
+                end,
+                content,
             )
             idx += 1
+            adjust_time = end - start if adjust else adjust_time
+            added = True
 
-    # Add the remaining subtitles.
-    if break_sub:
         yield srt.Subtitle(
             idx,
-            break_sub.start + adjust_time,
-            break_sub.end + adjust_time,
-            break_sub.content,
+            subtitle_start + adjust_time,
+            subtitle.end + adjust_time,
+            subtitle.content,
         )
         idx += 1
-        for subtitle in subs:
-            yield srt.Subtitle(
-                idx,
-                subtitle.start + adjust_time,
-                subtitle.end + adjust_time,
-                subtitle.content,
-            )
-            idx += 1
+        subtitle = _utils.tryNext(subs)
+
+    if not added:
+        yield srt.Subtitle(
+            idx,
+            start,
+            end,
+            content,
+        )
 
 
 # Command Line Interface
-def parse_args():
+def set_args():
     examples = {
-        "Add a caption": "srt add -i example.srt --start 00:00:5,00 --end 00:00:5,00 --content srt3 is awesome.",
+        "Add a subtitle": "srt add -i example.srt --start 00:00:5,00 --end 00:00:5,00 --content srt3 is awesome.",
+        "Add a subtitle and adjust subsequent ones": "srt add -i example.srt --start 00:00:5,00 --end 00:00:5,00 --content srt3 is awesome.",
     }
-    parser = utils.basic_parser(description=__doc__, examples=examples)
+    parser = _cli.basic_parser(description=__doc__, examples=examples)
     parser.add_argument(
         "--start",
-        "--t1",
+        "-s",
         metavar=("TIMESTAMP"),
         type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
         default=datetime.timedelta(0),
@@ -104,7 +87,7 @@ def parse_args():
     )
     parser.add_argument(
         "--end",
-        "--t2",
+        "-e",
         metavar=("TIMESTAMP"),
         type=lambda arg: srt.srt_timestamp_to_timedelta(arg),
         default=datetime.timedelta(0),
@@ -112,23 +95,23 @@ def parse_args():
         help="The timestamp to stop the subtitle at.",
     )
     parser.add_argument(
-        "-c", "--content", help="The content of the subtitle", required=True
+        "-c", "--content", required=True, help="The content of the subtitle."
     )
     parser.add_argument(
-        "--at",
         "--adjust",
+        "-a",
         action="store_true",
-        help="Adjust the timestamps of non-removed captions",
+        help="Adjust the timestamps of subsequent subtitles.",
     )
     return parser.parse_args()
 
 
 def main():
-    args = parse_args()
+    args = set_args()
     logging.basicConfig(level=args.log_level)
-    utils.set_basic_args(args)
+    _cli.set_basic_args(args)
     add_subs = add(args.input, args.start, args.end, args.content, args.adjust)
-    output = utils.compose_suggest_on_fail(add_subs, strict=args.strict)
+    output = _cli.compose_suggest_on_fail(add_subs, strict=args.strict)
     args.output.write(output)
 
 

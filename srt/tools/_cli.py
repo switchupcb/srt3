@@ -66,7 +66,7 @@ def basic_parser(
             metavar="FILE",
             action="append",
             type=lambda arg: dash_to_stream(arg, "input"),
-            help="the files to process",
+            help="The files to process.",
             required=True,
         )
     else:
@@ -76,7 +76,7 @@ def basic_parser(
             metavar="FILE",
             default=STDIN_BYTESTREAM,
             type=lambda arg: dash_to_stream(arg, "input"),
-            help="the file to process (default: stdin)",
+            help="The file to process (default: stdin).",
         )
 
     if not no_output:
@@ -86,17 +86,28 @@ def basic_parser(
             metavar="FILE",
             default=STDOUT_BYTESTREAM,
             type=lambda arg: dash_to_stream(arg, "output"),
-            help="the file to write to (default: stdout)",
+            help="The file to write to (default: stdout).",
         )
         if not multi_input:
             parser.add_argument(
                 "--inplace",
-                "-p",
+                "-q",
                 action="store_true",
-                help="modify file in place",
+                help="Modify the file in place.",
             )
 
-    shelp = "allow blank lines in output, your media player may explode"
+    parser.add_argument(
+        "--encoding", help="The encoding to read/write files in (default: utf8)."
+    )
+
+    parser.add_argument(
+        "--ignore-parsing-errors",
+        "-x",
+        action="store_true",
+        help="Attempt to continue when there are parsing errors.",
+    )
+
+    shelp = "Allow blank lines in output. Your media player may explode!"
     if hide_no_strict:
         shelp = argparse.SUPPRESS
 
@@ -107,18 +118,7 @@ def basic_parser(
         dest="log_level",
         const=logging.DEBUG,
         default=logging.INFO,
-        help="enable debug logging",
-    )
-
-    parser.add_argument(
-        "--ignore-parsing-errors",
-        "-c",
-        action="store_true",
-        help="try to keep going, even if there are parsing errors",
-    )
-
-    parser.add_argument(
-        "--encoding", "-e", help="the encoding to read/write files in (default: utf8)"
+        help="Enable debug logging.",
     )
 
     # if len(sys.argv) == 1:
@@ -133,7 +133,7 @@ def set_basic_args(args):
             raise ValueError("Cannot use --inplace on stdin")
 
         if args.output != DASH_STREAM_MAP["output"]:
-            raise ValueError("Cannot use -o and -p together")
+            raise ValueError("Cannot use -o and -q together")
 
         args.output = args.input
 

@@ -89,7 +89,7 @@ class TestToolFind(unittest.TestCase):
             srt.Subtitle(2, t("00:00:02,038"), t("00:00:02,772"), "D"),
             srt.Subtitle(3, t("00:00:02,772"), t("00:00:03,940"), "E"),
         ]
-        self.assertEqual(list(result), a)  # to first caption
+        self.assertEqual(list(result), a)  # to first subtitle
 
         result = find_by_timestamp(
             self.subs(), t("00:00:17,500"), t("00:00:00,000"), True
