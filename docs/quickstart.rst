@@ -69,5 +69,5 @@ Import Guide
     tools.find.find_by_timestamp()
 
     # import all members from a tool module.
-    from srt.tools.remove import *
+    from srt.tools.find import *
     find_by_timestamp()

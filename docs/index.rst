@@ -1,9 +1,9 @@
 `srt`: Parse SubRip files
 =========================
 
-srt_ is a simple Python library for parsing, modifying, and composing SRT files.
+srt3_ is a simple Python library for parsing, modifying, and composing SRT files.
 
-.. _srt: https://github.com/switchupcb/srt
+.. _srt3: https://github.com/switchupcb/srt3
 
 Documentation
 =============
