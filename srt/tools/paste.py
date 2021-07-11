@@ -77,10 +77,10 @@ def paste(subs, copy, timestamp, space=datetime.timedelta(0), block=False):
             copied_subtitle_end = copied_subtitle.end + copied_time
 
             # compare the alterted timestamps of subtitle and copied_subtitle
+            last_copied_subtitle = copied_subtitle
             if subtitle_start > copied_subtitle_start:
                 yield srt.Subtitle(idx, copied_subtitle_start, copied_subtitle_end, copied_subtitle.content)
                 idx += 1
-                last_copied_subtitle = copied_subtitle
                 copied_subtitle = _utils.tryNext(copy)
             elif subtitle_start < copied_subtitle_start:
                 yield srt.Subtitle(idx, subtitle_start, subtitle_end, subtitle.content)
@@ -90,7 +90,6 @@ def paste(subs, copy, timestamp, space=datetime.timedelta(0), block=False):
                 if (subtitle_end > copied_subtitle_end):
                     yield srt.Subtitle(idx, copied_subtitle_start, copied_subtitle_end, copied_subtitle.content)
                     idx += 1
-                    last_copied_subtitle = copied_subtitle
                     copied_subtitle = _utils.tryNext(copy)
                 else:
                     yield srt.Subtitle(idx, subtitle_start, subtitle_end, subtitle.content)
