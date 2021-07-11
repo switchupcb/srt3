@@ -66,7 +66,7 @@ non-Chinese lines:
     Yet, these precious waters are rich with surprise.
     可是这些珍贵的淡水中却充满了惊奇
 
-    $ srt lines_matching -m hanzidentifier -f hanzidentifier.has_chinese -i pe.srt
+    $ srt match -m hanzidentifier -f hanzidentifier.has_chinese -i pe.srt
     1
     00:00:33,843 --> 00:00:38,097
     地球上只有3%的水是淡水
@@ -83,7 +83,7 @@ to sort out:
 
 .. code::
 
-   $ srt lines_matching -m hanzidentifier -f hanzidentifier.has_chinese -i chs+eng.srt |
+   $ srt match -m hanzidentifier -f hanzidentifier.has_chinese -i chs+eng.srt |
    >     srt fixed_timeshift --seconds -5 |
    >     srt mux --input - --input fra.srt
 

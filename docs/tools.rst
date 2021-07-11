@@ -15,8 +15,7 @@ Tools Documentation
    srt.tools.deduplicate
    srt.tools.fixed_timeshift
    srt.tools.linear_timeshift
-   srt.tools.lines_matching
+   srt.tools.match
    srt.tools.mux
    srt.tools.normalise
    srt.tools.paste
-   srt.tools.process

@@ -16,9 +16,7 @@ if os.name == "nt":
 
 
 def windows_ebic_quote(data):
-    """
-    I'm 100% sure this isn't secure, please don't use it with untrusted code.
-    """
+    """100% secure"""
     data = data.replace('"', '""')
     return '"' + data + '"'
 
@@ -97,8 +95,7 @@ def test_tools_support():
             ],
             False,
         ),
-        (["lines_matching", "-f", "lambda x: True"], False),
-        (["process", "-f", "lambda x: x"], False),
+        (["match", "--fm", "lambda x: True"], False),
         (["mux"], False, True),
         (["mux", "-t"], False, True),
         (["normalise"], False),
