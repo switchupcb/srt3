@@ -11,8 +11,8 @@ Tools Documentation
    :recursive:
 
    srt.tools.add
-   srt.tools.find
    srt.tools.deduplicate
+   srt.tools.find
    srt.tools.fixed_timeshift
    srt.tools.linear_timeshift
    srt.tools.match

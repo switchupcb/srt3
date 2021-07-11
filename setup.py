@@ -9,22 +9,21 @@ with codecs.open("README.rst", encoding="utf8") as readme_f:
 
 setup(
     name="srt3",
-    version="0.0.0",
+    version="1.0.0",
     python_requires=">=3.3",
     description="A simple library for parsing, modifying, and composing SRT files.",
     long_description=README,
+    long_description_content_type="text/x-rst",
     author="SwitchUpCB",
-    url="https://github.com/switchupcb/srt",
-    packages=find_packages(),
-    scripts=[
-        "srt/tools/srt",
-    ],
-    license="Public Domain",
-    keywords="srt",
+    url="https://github.com/switchupcb/srt3",
+    packages=find_packages(include=["srt", "srt.*"]),
+    license="MIT",
+    license_files=("LICENSE"),
+    keywords=["srt", "srt3"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
-        "License :: Public Domain",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
@@ -35,4 +34,9 @@ setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Text Processing",
     ],
+    entry_points={
+        "console_scripts": [
+            "srt = srt.tools._srt:main",
+        ],
+    },
 )

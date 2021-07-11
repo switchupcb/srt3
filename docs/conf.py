@@ -2,7 +2,7 @@ import sys
 import os
 
 # srt.py is in the /srt directory
-sys.path.insert(0, os.path.abspath("./"))
+sys.path.insert(0, os.path.abspath("../"))
 
 # Project Information
 project = "srt3"
