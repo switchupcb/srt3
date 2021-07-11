@@ -1,4 +1,4 @@
-|ghactions| |lgtm| |coveralls| |libraries|
+|ghactions| |lgtm| |codecov| |libraries|
 
 .. |ghactions| image:: https://github.com/switchupcb/srt3/actions/workflows/python-package.yml/badge.svg
   :target: https://github.com/switchupcb/srt3/actions
@@ -8,8 +8,8 @@
   :target: https://lgtm.com/projects/g/switchupcb/srt3/overview/
   :alt: LGTM
 
-.. |coveralls| image:: https://img.shields.io/coveralls/switchupcb/srt3/develop.svg?label=test%20coverage
-  :target: https://coveralls.io/github/switchupcb/srt3?branch=develop
+.. |codecov| image:: https://codecov.io/gh/switchupcb/srt3/branch/develop/graph/badge.svg?token=YINLIN42N1
+  :target: https://codecov.io/gh/switchupcb/srt3
   :alt: Coverage
 
 .. |libraries| image:: https://img.shields.io/librariesio/github/switchupcb/srt3.svg?label=dependencies
