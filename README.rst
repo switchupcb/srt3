@@ -145,5 +145,10 @@ To install the latest development version directly from GitHub:
 
     pip install -U git+https://github.com/switchupcb/srt3.git@develop
 
+Contribute
+----------
+You can contribute to this repository using its `Contribution Guidelines`_.
+
 .. _`Detailed API documentation`: http://srt3.readthedocs.org/en/latest/api.html
 .. _`tools shipped with the library`: https://github.com/switchupcb/srt3/tree/develop/srt/tools
+.. _`Contribution Guidelines`: https://github.com/switchupcb/srt3/blob/5011e36336134eedf281bbab60279c988b54e07f/.github/CONTRIBUTING.md
