@@ -17,7 +17,7 @@ def paste(subs, copy, timestamp, space=datetime.timedelta(0), block=False):
     """Pastes subtitles into other subtitles at a given timestamp.
 
     :param subs: :py:class:`Subtitle` objects
-    :param copy: :py:class: The `Subtitle` objects to be pasted.
+    :param copy: The :py:class:`Subtitle` objects to be pasted.
     :param datetime.timedelta timestamp: The timestamp to paste at.
     :param datetime.timedelta space: The amount of space to precede the paste.
     :param boolean block: Whether to paste the copied subtitles as a block
@@ -67,32 +67,31 @@ def paste(subs, copy, timestamp, space=datetime.timedelta(0), block=False):
         # fmt: off
         # ^ prevents extravagant statement expansion from black
         else:
-            subtitle_start = subtitle.start
+            start = subtitle.start
             subtitle_end = subtitle.end
             if subtitle.start > timestamp:
-                subtitle_start += block_time
+                start += block_time
                 subtitle_end += block_time
 
-            copied_subtitle_start = copied_subtitle.start + copied_time
-            copied_subtitle_end = copied_subtitle.end + copied_time
+            copied_start = copied_subtitle.start + copied_time
+            copied_end = copied_subtitle.end + copied_time
 
             # compare the alterted timestamps of subtitle and copied_subtitle
-            last_copied_subtitle = copied_subtitle
-            if subtitle_start > copied_subtitle_start:
-                yield srt.Subtitle(idx, copied_subtitle_start, copied_subtitle_end, copied_subtitle.content)
+            if start > copied_start:
+                yield srt.Subtitle(idx, copied_start, copied_end, copied_subtitle.content)
                 idx += 1
                 copied_subtitle = _utils.tryNext(copy)
-            elif subtitle_start < copied_subtitle_start:
-                yield srt.Subtitle(idx, subtitle_start, subtitle_end, subtitle.content)
+            elif start < copied_start:
+                yield srt.Subtitle(idx, start, subtitle_end, subtitle.content)
                 idx += 1
                 subtitle = _utils.tryNext(subs)
-            elif subtitle_start == copied_subtitle_start:
-                if (subtitle_end > copied_subtitle_end):
-                    yield srt.Subtitle(idx, copied_subtitle_start, copied_subtitle_end, copied_subtitle.content)
+            elif start == copied_start:
+                if (subtitle_end > copied_end):
+                    yield srt.Subtitle(idx, copied_start, copied_end, copied_subtitle.content)
                     idx += 1
                     copied_subtitle = _utils.tryNext(copy)
                 else:
-                    yield srt.Subtitle(idx, subtitle_start, subtitle_end, subtitle.content)
+                    yield srt.Subtitle(idx, start, subtitle_end, subtitle.content)
                     idx += 1
                     subtitle = _utils.tryNext(subs)
         # fmt: on
