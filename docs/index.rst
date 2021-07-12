@@ -1,5 +1,5 @@
-`srt`: Parse SubRip files
-=========================
+`srt3`: Parse SubRip Files
+==========================
 
 srt3_ is a simple Python library for parsing, modifying, and composing SRT files.
 
