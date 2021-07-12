@@ -9,7 +9,7 @@ with codecs.open("README.rst", encoding="utf8") as readme_f:
 
 setup(
     name="srt3",
-    version="1.0.0",
+    version="1.0.1",
     python_requires=">=3.3",
     description="A simple library for parsing, modifying, and composing SRT files.",
     long_description=README,
