@@ -96,3 +96,4 @@ jobs:
           tox
         env:
           TOXENV: doctest,black,pylint,bandit,coverage,py-release
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
